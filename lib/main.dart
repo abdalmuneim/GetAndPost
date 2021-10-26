@@ -31,12 +31,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Future<List<Brand>?> brand;
+  late Future<List<Album>?> brand;
 
   @override
   void initState() {
     super.initState();
-    brand = GetApi().fetchData();
+    brand = GetDat().fetchData();
   }
 
   @override
@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: FutureBuilder(
         future: brand,
         builder:
-            (BuildContext context, AsyncSnapshot<List<Brand>?> snapshot) {
+            (BuildContext context, AsyncSnapshot<List<Album>?> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
               return const Center(child: Text('none'));

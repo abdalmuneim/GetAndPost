@@ -4,24 +4,24 @@
 
 import 'dart:convert';
 
-List<Brand> brandFromJson(String str) =>
-    List<Brand>.from(json.decode(str).map((x) => Brand.fromJson(x)));
+List<Album> albumFromJson(String str) =>
+    List<Album>.from(json.decode(str).map((x) => Album.fromJson(x)));
 
-String brandToJson(List<Brand> data) =>
+String albumToJson(List<Album> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Brand {
+class Album {
   final int userId;
   final int id;
   final String title;
 
-  Brand({
+  Album({
     required this.userId,
     required this.id,
     required this.title,
   });
 
-  factory Brand.fromJson(Map<String, dynamic> json) => Brand(
+  factory Album.fromJson(Map<String, dynamic> json) => Album(
         userId: json["userId"],
         id: json["id"],
         title: json["title"],
