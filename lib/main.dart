@@ -63,8 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: const TextStyle(
                             color: Colors.red, fontSize: 20)));
               } else {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                return Center(
                   child: ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (BuildContext context, int index) {
