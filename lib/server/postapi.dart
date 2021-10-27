@@ -5,7 +5,7 @@ import 'package:postdata/string.dart';
 import 'package:http/http.dart' as http;
 
 class PostData {
-  final String urlPost = apiKey;
+  final String urlPost = dartApiKey;
 
   Future<Album> posts(String title, int id, int userId) async {
     final http.Response response = await http.post(

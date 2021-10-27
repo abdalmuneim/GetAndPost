@@ -3,7 +3,26 @@ import 'package:postdata/modul/datamdel.dart';
 import 'package:postdata/string.dart';
 
 class GetDat {
-  var url = apiKey;
+  var url = dartApiKey;
+
+  Future<List<Album>?> fetchData() async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final String strData = response.body;
+        return albumFromJson(strData);
+      } else {
+        throw Exception('Error getting brewery');
+      }
+    } catch (e) {
+      throw Exception('$e');
+    }
+  }
+}
+
+
+class GetDatFromHyperPay {
+  var url = dartApiKey;
 
   Future<List<Album>?> fetchData() async {
     try {

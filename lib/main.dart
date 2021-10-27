@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:postdata/modul/datamdel.dart';
+import 'package:postdata/modul/hyperpaymodel.dart';
 import 'package:postdata/server/postapi.dart';
+import 'package:postdata/server/posttohyperpay.dart';
 import 'package:postdata/viewdata.dart';
 
 void main() {
@@ -34,10 +35,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isLoading = false;
-  final TextEditingController _titleTextField = TextEditingController();
-  final TextEditingController _idTextField = TextEditingController();
-  final TextEditingController _userIdTextField = TextEditingController();
-  Future<Album>? _futureAlbum;
+
+
+  Future<Welcome>? _futureAlbum;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.all(8.0),
         child: (_futureAlbum == null)
             ? buildColumn()
-            : ViewData(appBar: _titleTextField.text),
+            : const ViewData(appBar: '',),
       ),
 
       // OutlinedButton(
@@ -148,37 +148,23 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        TextField(
-          controller: _titleTextField,
-          decoration: const InputDecoration(hintText: 'enter title'),
-        ),
-        TextField(
-          controller: _idTextField,
-          decoration: const InputDecoration(hintText: 'enter id'),
-          keyboardType: TextInputType.number,
-        ),
-        TextField(
-          controller: _userIdTextField,
-          decoration: const InputDecoration(hintText: 'enter userId'),
-          keyboardType: TextInputType.number,
-        ),
+        const Text('8a8294174b7ecb28014b9699220015ca'),
+        const Text('92.0'),
+        const Text('EUR'),
         ElevatedButton(
             onPressed: () {
-              int id = int.parse(_idTextField.text);
-              int userId = int.parse(_userIdTextField.text);
               setState(() {
-                _futureAlbum =
-                    PostData().posts(_titleTextField.text, id, userId);
+                PostToHyper().posts('8a8294174b7ecb28014b9699220015ca', '92.0', 'EUR');
               });
-              Future.delayed(
-                  const Duration(milliseconds: 500),
-                  () => {
-                        setState(() {
-                          isLoading = false;
-                        }),
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Post Successful'))),
-                      });
+              // Future.delayed(
+              //     const Duration(milliseconds: 500),
+              //     () => {
+              //           setState(() {
+              //             isLoading = false;
+              //           }),
+              //           ScaffoldMessenger.of(context).showSnackBar(
+              //               const SnackBar(content: Text('Post Successful'))),
+              //         });
             },
             child: const Text('Create Album'))
       ],
