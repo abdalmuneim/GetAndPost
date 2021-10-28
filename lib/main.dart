@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
@@ -183,10 +185,10 @@ class _MyHomePageState extends State<MyHomePage> {
     //  requestCheckoutId();
 
     var status;
-
+    // String myUrl = "http://dev.hyperpay.com/hyperpay-demo/getcheckoutid.php";
     final response = await http.post(
-      Uri.parse('http://dev.hyperpay.com/hyperpay-demo/getcheckoutid.php'),
-      headers: {'Accept': 'application/json'},
+      Uri.parse(hyperApiKey + "?amount=48.99&currency=EUR&paymentType=DB"),
+      headers: {HttpHeaders.AUTHORIZATION: 'Bearer OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg='},
     );
     status = response.body.contains('error');
 
@@ -230,10 +232,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> getpaymentstatus() async {
     var status;
 
-    String myUrl =
-        "http://dev.hyperpay.com/hyperpay-demo/getpaymentstatus.php?id=$_checkoutid";
+    // String myUrl =
+    //     "http://dev.hyperpay.com/hyperpay-demo/getpaymentstatus.php?id=$_checkoutid";
     final response = await http.post(
-      Uri.parse('http://dev.hyperpay.com/hyperpay-demo/getcheckoutid.php'),
+      Uri.parse(hyperApiKey + "/paymentStatus?resourcePath=" + ),
       headers: {'Accept': 'application/json'},
     );
     status = response.body.contains('error');

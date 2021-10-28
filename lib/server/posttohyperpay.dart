@@ -29,7 +29,6 @@ class PostToHyper {
       return Welcome.fromJson(jsonDecode(response.body));
       // return Welcome.fromJson(jsonDecode(strData));
     } else {
-      MyHomePage()._ch
       print(response.body);
     }
   }
