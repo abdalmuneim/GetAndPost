@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:convert';
+
 import 'package:postdata/modul/datamdel.dart';
 import 'package:postdata/modul/hyperpaymodel.dart';
 import 'package:postdata/server/postapi.dart';
 import 'package:postdata/server/posttohyperpay.dart';
+import 'package:postdata/string.dart';
 import 'package:postdata/viewdata.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -36,7 +41,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool isLoading = false;
 
-
   Future<Welcome>? _futureAlbum;
 
   @override
@@ -50,7 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.all(8.0),
         child: (_futureAlbum == null)
             ? buildColumn()
-            : const ViewData(appBar: '',),
+            : const ViewData(
+                appBar: '',
+              ),
       ),
 
       // OutlinedButton(
@@ -153,8 +159,10 @@ class _MyHomePageState extends State<MyHomePage> {
         const Text('EUR'),
         ElevatedButton(
             onPressed: () {
+              // _checkoutpage('mada');
               setState(() {
-                PostToHyper().posts('8a8294174b7ecb28014b9699220015ca', '92.0', 'EUR');
+                PostToHyper()
+                    .posts('8a8294174b7ecb28014b9699220015ca', '92.0', 'EUR');
               });
               // Future.delayed(
               //     const Duration(milliseconds: 500),
@@ -171,5 +179,76 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Future<void> _checkoutpage(String type) async {
+    //  requestCheckoutId();
+
+    var status;
+
+    final response = await http.post(
+      Uri.parse('http://dev.hyperpay.com/hyperpay-demo/getcheckoutid.php'),
+      headers: {'Accept': 'application/json'},
+    );
+    status = response.body.contains('error');
+
+    var data = json.decode(response.body);
+
+    if (status) {
+      print('data : ${data["error"]}');
+    } else {
+      print('data : ${data["id"]}');
+      _checkoutid = '${data["id"]}';
+
+      String transactionStatus;
+      try {
+        final String result =
+            await platform.invokeMethod('gethyperpayresponse', {
+          "type": "ReadyUI",
+          "mode": "TEST",
+          "checkoutid": _checkoutid,
+          "brand": type,
+        });
+        transactionStatus = '$result';
+      } on PlatformException catch (e) {
+        transactionStatus = "${e.message}";
+      }
+
+      if (transactionStatus != null ||
+          transactionStatus == "success" ||
+          transactionStatus == "SYNC") {
+        print(transactionStatus);
+        getpaymentstatus();
+      } else {
+        setState(() {
+          _resultText = transactionStatus;
+        });
+      }
+    }
+  }
+
+  static const platform = MethodChannel('Hyperpay.demo.fultter/channel');
+
+  Future<void> getpaymentstatus() async {
+    var status;
+
+    String myUrl =
+        "http://dev.hyperpay.com/hyperpay-demo/getpaymentstatus.php?id=$_checkoutid";
+    final response = await http.post(
+      Uri.parse('http://dev.hyperpay.com/hyperpay-demo/getcheckoutid.php'),
+      headers: {'Accept': 'application/json'},
+    );
+    status = response.body.contains('error');
+
+    var data = json.decode(response.body);
+
+    print("payment_status: ${data["result"].toString()}");
+
+    setState(() {
+      _resultText = data["result"].toString();
+    });
+  }
+
   buildFutureBuilder() {}
 }
+
+String _checkoutid = '';
+String _resultText = '';

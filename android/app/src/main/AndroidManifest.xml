@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.postdata"
-    package="com.oppwa.mobile.connect">
+    package="com.example.postdata">
    <application
         android:label="postdata"
         android:icon="@mipmap/ic_launcher">
