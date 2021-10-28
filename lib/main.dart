@@ -235,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // String myUrl =
     //     "http://dev.hyperpay.com/hyperpay-demo/getpaymentstatus.php?id=$_checkoutid";
     final response = await http.post(
-      Uri.parse(hyperApiKey + "/paymentStatus?resourcePath=" + ),
+      Uri.parse(hyperApiKey + "/paymentStatus?resourcePath=" + ''),
       headers: {'Accept': 'application/json'},
     );
     status = response.body.contains('error');
