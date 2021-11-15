@@ -7,24 +7,23 @@ import 'package:http/http.dart' as http;
 class PostData {
   final String urlPost = dartApiKey;
 
-  Future<Album> posts(String title, int id, int userId) async {
-    final http.Response response = await http.post(
-      Uri.parse(urlPost),
+  Future<Album>? createAlbum(String email, String password) async {
+    final response = await http.post(
+      Uri.parse(dartApiKey),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
+        'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, Object>{
-        'title': title,
-        'id': id,
-        'userId': userId,
+      body: jsonEncode(<String, String>{
+        'title': email,
+        // 'password': password,
       }),
     );
-    if (response.statusCode == 201) {
-      String strData = response.body;
 
-      return Album.fromJson(jsonDecode(strData));
+    if (response.statusCode == 201) {
+      return Album.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('error${response.statusCode}');
+      throw Exception('Failed to create album.');
     }
   }
+
 }

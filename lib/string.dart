@@ -1,3 +1,2 @@
 String dartApiKey = 'https://jsonplaceholder.typicode.com/albums';
-String hyperApiKey = 'https://eu-test.oppwa.com/v1/checkouts';
-
+String loginApi = 'http://localhost:8000/api/auth/login';
